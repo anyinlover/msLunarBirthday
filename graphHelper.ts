@@ -10,12 +10,12 @@ import {
 import { cachePersistencePlugin } from '@azure/identity-cache-persistence';
 import { Client, PageCollection } from '@microsoft/microsoft-graph-client';
 import {
-  User,
   Event,
   Calendar,
   CalendarColor,
   Importance,
   FreeBusyStatus,
+  ItemBody,
 } from '@microsoft/microsoft-graph-types';
 // prettier-ignore
 import { TokenCredentialAuthenticationProvider } from
@@ -23,7 +23,6 @@ import { TokenCredentialAuthenticationProvider } from
 
 import { AppSettings } from './appSettings';
 
-let _settings: AppSettings | undefined = undefined;
 let _deviceCodeCredential: DeviceCodeCredential | undefined = undefined;
 let _userClient: Client | undefined = undefined;
 
@@ -36,7 +35,6 @@ export function initializeGraphForUserAuth(
     throw new Error('Settings cannot be undefined');
   }
 
-  _settings = settings;
   useIdentityPlugin(cachePersistencePlugin);
   const tokenCachePersistenceOptions: TokenCachePersistenceOptions = {
     enabled: true, // Enable persistent token caching
@@ -106,8 +104,9 @@ export async function createEventAsync(
   isAllDay: boolean = false,
   isReminderOn: boolean = false,
   reminderMinutesBeforeStart: number = 0,
-  importance: Importance = 'normal',
   showAs: FreeBusyStatus = 'busy',
+  body: ItemBody = {},
+  importance: Importance = 'normal',
   categories: string[] = [],
 ): Promise<Event> {
   // Ensure client isn't undefined
@@ -122,6 +121,7 @@ export async function createEventAsync(
     isReminderOn: isReminderOn,
     reminderMinutesBeforeStart: reminderMinutesBeforeStart,
     showAs: showAs,
+    body: body,
     importance: importance,
     categories: categories,
   };
