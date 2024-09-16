@@ -4,19 +4,14 @@
 // <ProgramSnippet>
 import { DeviceCodeInfo } from '@azure/identity';
 import {
-  TodoTaskList,
-  TodoTask,
   Calendar,
   Event,
   Importance,
-  TaskStatus,
 } from '@microsoft/microsoft-graph-types';
 
 import settings, { AppSettings } from './appSettings';
 import * as graphHelper from './graphHelper';
 
-const localTasks: [string, string][] = [];
-let workingIdx: number = -1;
 let calendarID: string | undefined = undefined;
 
 async function main() {
